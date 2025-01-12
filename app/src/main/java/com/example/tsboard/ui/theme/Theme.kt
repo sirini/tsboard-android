@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 
 // 다크 테마 색상 팔레트
 private val DarkColorScheme = darkColorScheme(
-    primary = MainBlue,
+    primary = WhiteText,
     secondary = DarkGrey,
     tertiary = WhiteText,
     background = BlackBackground,
@@ -22,7 +22,7 @@ private val DarkColorScheme = darkColorScheme(
 
 // 라이트 테마 색상 팔레트
 private val LightColorScheme = lightColorScheme(
-    primary = MainBlue,
+    primary = DarkText,
     secondary = LightBlue,
     tertiary = DarkText,
     background = LightGrey,

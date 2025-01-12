@@ -1,4 +1,4 @@
-package com.example.tsboard
+package com.example.tsboard.ui.activities
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,15 +10,20 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.example.tsboard.ui.components.TsboardTopAppBar
+import com.example.tsboard.ui.components.drawer.DrawerContent
 import com.example.tsboard.ui.theme.TsboardTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -27,21 +32,26 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            TsboardTheme(darkTheme = true) {
-                val scrollBehavior =
-                    TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+            var drawerState = rememberDrawerState(DrawerValue.Closed)
+            val coroutineScope = rememberCoroutineScope()
 
-                Scaffold(
-                    topBar = { TsboardTopAppBar(scrollBehavior) },
-                    modifier = Modifier
-                        .nestedScroll(scrollBehavior.nestedScrollConnection)
-                        .fillMaxSize()
-                ) { innerPadding ->
-                    Greeting(
+            ModalNavigationDrawer(drawerState = drawerState, drawerContent = { DrawerContent() }) {
+                TsboardTheme(darkTheme = true) {
+                    val scrollBehavior =
+                        TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+
+                    Scaffold(
+                        topBar = { TsboardTopAppBar(scrollBehavior, drawerState, coroutineScope) },
                         modifier = Modifier
-                            .padding(innerPadding)
+                            .nestedScroll(scrollBehavior.nestedScrollConnection)
                             .fillMaxSize()
-                    )
+                    ) { innerPadding ->
+                        Greeting(
+                            modifier = Modifier
+                                .padding(innerPadding)
+                                .fillMaxSize()
+                        )
+                    }
                 }
             }
         }
